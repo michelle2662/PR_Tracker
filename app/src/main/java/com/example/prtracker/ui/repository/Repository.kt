@@ -6,45 +6,42 @@ import com.example.prtracker.data.room.UserDao
 import com.example.prtracker.data.room.models.Lifts
 import com.example.prtracker.data.room.models.PR
 import com.example.prtracker.data.room.models.User
+import kotlinx.coroutines.flow.Flow
 
 class Repository(
     private val userDao: UserDao,
     private val liftsDao: LiftsDao,
     private val prDao: PRDao
 ) {
-    val users = userDao.getAllUsers()
+    fun getUsers(): Flow<List<User>> = userDao.getAllUsers()
 
-    fun getUsers() = userDao.getAllUsers()
+    fun getUserPR(userId: Int): Flow<PR> = prDao.getPRsForUser(userId)
 
-    fun getUserPR(userId: Int) = prDao.getPRsForUser(userId)
+    fun getPRForUserAndLift(userId: Int, liftId: Int): Flow<PR?> = prDao.getPRForUserAndLift(userId, liftId)
 
+    fun getPRsForLift(liftId: Int): Flow<PR> = prDao.getPRsForLift(liftId)
 
-    fun getPRForUserAndLift(userId:Int, liftId:Int) = prDao.getPRForUserAndLift(userId,liftId)
-
-    fun getPRsForLift(liftId:Int) = prDao.getPRsForLift(liftId)
-
-    suspend fun insertUser(user:User){
+    suspend fun insertUser(user: User) {
         userDao.insert(user)
     }
 
-    suspend fun insertLift(lift:Lifts){
+    suspend fun insertLift(lift: Lifts) {
         liftsDao.insert(lift)
     }
 
-    suspend fun deleteLift(lift:Lifts){
+    suspend fun deleteLift(lift: Lifts) {
         liftsDao.delete(lift)
     }
 
-    suspend fun updateLift(lift:Lifts){
-        liftsDao.delete(lift)
+    suspend fun updateLift(lift: Lifts) {
+        liftsDao.update(lift)
     }
 
-    suspend fun insertPR(pr: PR){
+    suspend fun insertPR(pr: PR) {
         prDao.insertPR(pr)
     }
 
-    suspend fun updatePR(pr:PR) {
+    suspend fun updatePR(pr: PR) {
         prDao.updatePR(pr)
-
     }
 }
