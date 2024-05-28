@@ -66,6 +66,7 @@ fun UserCard(user: User, onUserClick: (User) -> Unit) {
             text = "${user.first_name} ${user.last_name}",
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.bodyLarge
+
         )
     }
 }

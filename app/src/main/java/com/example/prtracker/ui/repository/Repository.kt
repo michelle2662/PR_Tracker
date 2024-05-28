@@ -15,11 +15,11 @@ class Repository(
 ) {
     fun getUsers(): Flow<List<User>> = userDao.getAllUsers()
 
-    fun getUserPR(userId: Int): Flow<PR> = prDao.getPRsForUser(userId)
+    fun getUserPR(userId: Int): Flow<List<PR>> = prDao.getPRsForUser(userId)
 
     fun getPRForUserAndLift(userId: Int, liftId: Int): Flow<PR?> = prDao.getPRForUserAndLift(userId, liftId)
 
-    fun getPRsForLift(liftId: Int): Flow<PR> = prDao.getPRsForLift(liftId)
+    fun getPRsForLift(liftId: Int): Flow<List<PR>> = prDao.getPRsForLift(liftId)
 
     suspend fun insertUser(user: User) {
         userDao.insert(user)
@@ -43,5 +43,9 @@ class Repository(
 
     suspend fun updatePR(pr: PR) {
         prDao.updatePR(pr)
+    }
+
+    suspend fun findLiftByName(name: String): Lifts? {
+        return liftsDao.findLiftByName(name)
     }
 }

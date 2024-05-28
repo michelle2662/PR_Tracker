@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.prtracker.ui.UserDetailScreen
 import com.example.prtracker.ui.home.UserScreen
 import com.example.prtracker.ui.theme.PRTrackerTheme
 
@@ -19,22 +24,64 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PRTrackerTheme {
-                AppContent()
+                val navController = rememberNavController()
+                AppContent(navController)
             }
         }
     }
 }
 
 @Composable
-fun AppContent() {
+fun AppContent(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        UserScreen(
-            modifier = Modifier.padding(innerPadding),
-            onNavigate = { userId ->
-                // Handle navigation based on the userId
-                // For now, we'll just print the userId
-                println("Navigating to user with ID: $userId")
+        NavHost(
+            navController = navController,
+            startDestination = "user_screen",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable("user_screen") {
+                UserScreen(onNavigate = { userId ->
+                    navController.navigate("user_detail/$userId")
+                })
             }
-        )
+            composable("user_detail/{userId}") { backStackEntry ->
+                val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: return@composable
+                UserDetailScreen(userId = userId)
+            }
+
+        }
     }
 }
+
+//@Composable
+//fun AppContent(
+//    navController: NavController
+//) {
+//    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//        NavHost(
+//            navController = navController,
+//            "user_screen".also { startDestination = it },
+//            var modifier : kotlin . Any ? = Modifier.padding(innerPadding)
+//        ) {
+//            composable("user_screen") {
+//                UserScreen(onNavigate = { userId ->
+//                    navController.navigate("user_detail/$userId")
+//                })
+//            }
+//            composable("user_detail/{userId}") { backStackEntry ->
+//                val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: return@composable
+//                UserDetailScreen(userId = userId)
+//            }
+//        }
+////        UserScreen(
+////            modifier = Modifier.padding(innerPadding),
+////            onNavigate = { userId ->
+////                // Handle navigation based on the userId
+////                // For now, we'll just print the userId
+////                println("Navigating to user with ID: $userId")
+////            }
+////        )
+//    }
+//}
+
+

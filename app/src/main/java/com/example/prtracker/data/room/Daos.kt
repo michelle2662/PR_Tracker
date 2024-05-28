@@ -43,23 +43,24 @@ interface LiftsDao{
 
     @Query("SELECT * FROM lifts")
     fun getAllLifts(): Flow<List<Lifts>>
-
+    @Query("SELECT * FROM lifts WHERE lift = :name LIMIT 1")
+    suspend fun findLiftByName(name: String): Lifts?
 }
 
 @Dao
 interface PRDao {
 
     @Query("SELECT * FROM prs")
-     fun getAllPRs(): Flow<PR>
+    fun getAllPRs(): Flow<List<PR>>
 
     @Query("SELECT * FROM prs WHERE lifts_id = :liftId")
-     fun getPRsForLift(liftId:Int):Flow<PR>
+    fun getPRsForLift(liftId: Int): Flow<List<PR>>
 
     @Query("SELECT * FROM prs WHERE user_id = :userId")
-     fun getPRsForUser(userId:Int):Flow<PR>
+     fun getPRsForUser(userId:Int):Flow<List<PR>>
 
      @Query("SELECT * FROM prs WHERE user_id = :userId and lifts_id = :liftId")
-     fun getPRForUserAndLift(userId:Int, liftId:Int): Flow<PR>
+     fun getPRForUserAndLift(userId:Int, liftId:Int): Flow<PR?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPR(pr: PR)
