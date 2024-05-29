@@ -3,6 +3,7 @@ package com.example.prtracker.ui.repository
 import com.example.prtracker.data.room.LiftsDao
 import com.example.prtracker.data.room.PRDao
 import com.example.prtracker.data.room.UserDao
+import com.example.prtracker.data.room.models.LiftWithPR
 import com.example.prtracker.data.room.models.Lifts
 import com.example.prtracker.data.room.models.PR
 import com.example.prtracker.data.room.models.User
@@ -16,6 +17,7 @@ class Repository(
     fun getUsers(): Flow<List<User>> = userDao.getAllUsers()
 
     fun getUserPR(userId: Int): Flow<List<PR>> = prDao.getPRsForUser(userId)
+    fun getUserPRsWithLifts(userId: Int): Flow<List<LiftWithPR>> = prDao.getUserPRsWithLifts(userId)
 
     fun getPRForUserAndLift(userId: Int, liftId: Int): Flow<PR?> = prDao.getPRForUserAndLift(userId, liftId)
 

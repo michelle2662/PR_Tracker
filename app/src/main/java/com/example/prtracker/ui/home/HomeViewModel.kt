@@ -1,6 +1,7 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prtracker.Graph
+import com.example.prtracker.data.room.models.LiftWithPR
 import com.example.prtracker.data.room.models.Lifts
 import com.example.prtracker.data.room.models.PR
 import com.example.prtracker.data.room.models.User
@@ -35,7 +36,9 @@ class HomeViewModel(
             repository.insertUser(user)
         }
     }
-
+    fun getUserPRsWithLifts(userId: Int): Flow<List<LiftWithPR>> {
+        return repository.getUserPRsWithLifts(userId)
+    }
     fun insertPR(userId:Int, liftName:String, weight:Double, repetitions:Int){
         viewModelScope.launch{
             var lift = repository.findLiftByName(liftName)

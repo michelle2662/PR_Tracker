@@ -1,9 +1,11 @@
 package com.example.prtracker.data.room.models
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import java.time.LocalDate
 import java.util.Date
 
@@ -53,4 +55,13 @@ data class PR(
     val weight: Double,
     val repetitions: Int,
     val date: Date
+)
+
+data class LiftWithPR(
+    @Embedded val pr: PR,
+    @Relation(
+        parentColumn = "lifts_id",
+        entityColumn = "lifts_id"
+    )
+    val lift: Lifts
 )

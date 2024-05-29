@@ -1,17 +1,15 @@
-package com.example.prtracker.ui
+package com.example.prtracker.ui.detail
 
 import HomeViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -35,11 +33,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.I
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.prtracker.data.room.models.PR
+import com.example.prtracker.data.room.models.LiftWithPR
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +49,7 @@ fun UserDetailScreen(
     var showPopUp by remember { mutableStateOf(false)} // -> STATE
 
     user?.let {user ->
-        val userPRs by homeViewModel.getUserPRs(userId).collectAsState(initial = emptyList())
+        val userPRsWithLifts by homeViewModel.getUserPRsWithLifts(userId).collectAsState(initial = emptyList())
 
         Scaffold(
             topBar ={
@@ -85,15 +81,13 @@ fun UserDetailScreen(
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                //verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                items(userPRs) { pr ->
-                    PRItem(pr)
+                items(userPRsWithLifts) { liftWithPR ->
+                    PRItem(liftWithPR)
                 }
             }
         }
-
-
 
         if (showPopUp){
             AddNewPR(
@@ -179,7 +173,7 @@ fun AddNewPR(
 }
 
 @Composable
-fun PRItem(pr: PR) {
+fun PRItem(liftWithPR: LiftWithPR) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,10 +183,9 @@ fun PRItem(pr: PR) {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text(text = "Lift ID: ${pr.liftId}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Weight: ${pr.weight} lb", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Repetitions: ${pr.repetitions}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Date: ${pr.date}", style = MaterialTheme.typography.bodyLarge)
+            Text(text = "${liftWithPR.lift.lift}: ${liftWithPR.pr.weight} lb" , style = MaterialTheme.typography.bodyLarge)
+            Text(text = "Repetitions: ${liftWithPR.pr.repetitions}", style = MaterialTheme.typography.bodyLarge)
+            //Text(text = "Date: ${liftWithPR.pr.date}", style = MaterialTheme.typography.bodyLarge)
         }
     }
 }
