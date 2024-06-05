@@ -58,6 +58,12 @@ class HomeViewModel(
     fun getUserPRs(userId: Int): Flow<List<PR>> {
         return repository.getUserPR(userId)
     }
+
+    fun deletePR(pr: PR) {
+        viewModelScope.launch{
+            repository.deletePR(pr)
+        }
+    }
 }
 
 data class HomeState(

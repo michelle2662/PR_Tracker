@@ -25,7 +25,7 @@ data class Lifts(
     @ColumnInfo(name = "lifts_id")
     @PrimaryKey(autoGenerate = true)
     val id:Int,
-    val lift:String,
+    var lift:String,
 )
 
 @Entity(tableName = "prs",

@@ -65,7 +65,15 @@ interface PRDao {
      fun getPRForUserAndLift(userId:Int, liftId:Int): Flow<PR?>
 
     @Transaction
-    @Query("SELECT * FROM prs WHERE user_id = :userId")
+    @Query("""
+        SELECT * FROM prs 
+        WHERE user_id = :userId AND (lifts_id, weight) IN (
+            SELECT lifts_id, MAX(weight) 
+            FROM prs 
+            WHERE user_id = :userId 
+            GROUP BY lifts_id
+        )
+    """)
     fun getUserPRsWithLifts(userId: Int): Flow<List<LiftWithPR>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

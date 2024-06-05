@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.prtracker.ui.detail.PercentWorkoutScreen
 import com.example.prtracker.ui.detail.UserDetailScreen
 import com.example.prtracker.ui.home.UserScreen
 import com.example.prtracker.ui.theme.PRTrackerTheme
@@ -45,12 +46,16 @@ fun AppContent(navController: NavHostController) {
             }
             composable("user_detail/{userId}") { backStackEntry ->
                 val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: return@composable
-                UserDetailScreen(userId = userId)
+                UserDetailScreen(navController, userId = userId)
             }
+
+
 
         }
     }
 }
+
+
 
 //@Composable
 //fun AppContent(

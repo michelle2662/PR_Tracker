@@ -47,6 +47,10 @@ class Repository(
         prDao.updatePR(pr)
     }
 
+    suspend fun deletePR(pr:PR){
+        prDao.deletePR(pr)
+    }
+
     suspend fun findLiftByName(name: String): Lifts? {
         return liftsDao.findLiftByName(name)
     }
